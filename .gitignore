@@ -1,3 +1,5 @@
+src/main/resources/application-user.yaml
+
 HELP.md
 .gradle
 build/
