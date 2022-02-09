@@ -6,6 +6,9 @@ data class CoinInformation(
     val coin: String,
     val name: String,
     val depositAllEnable: Boolean,
+    val free: String,
+    val freeze: String,
+    val locked: String
 )
 
 //[
