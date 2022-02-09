@@ -9,15 +9,13 @@ import org.bouncycastle.crypto.macs.HMac
 import org.bouncycastle.crypto.params.KeyParameter
 import org.springframework.stereotype.Component
 
-
 @Component
 class SignatureComponent {
 
-
-    fun hmacWithBouncyCastle(algorithm: String, data: String, key: String): String? {
+    fun hmacWithBouncyCastle(data: String, secretKey: String, algorithm: String = "HmacSHA256"): String? {
         val digest = getHashDigest(algorithm)
         val hMac = HMac(digest)
-        hMac.init(KeyParameter(key.toByteArray()));
+        hMac.init(KeyParameter(secretKey.toByteArray()));
         val hmacIn = data.toByteArray()
         hMac.update(hmacIn, 0, hmacIn.size)
         val hmacOut = ByteArray(hMac.macSize)
@@ -37,7 +35,7 @@ class SignatureComponent {
         return SHA256Digest()
     }
 
-    fun bytesToHex(hash: ByteArray): String? {
+    private fun bytesToHex(hash: ByteArray): String? {
         val hexString = StringBuilder(2 * hash.size)
         for (h in hash) {
             val hex = Integer.toHexString(0xff and h.toInt())
