@@ -3,7 +3,7 @@ package minatorak.capitalcost.client.trade
 import minatorak.capitalcost.SignatureComponent
 import minatorak.capitalcost.client.BinanceClient
 import minatorak.capitalcost.client.models.OpenOrders
-import minatorak.capitalcost.client.models.TradesBySymbol
+import minatorak.capitalcost.client.models.TransactionTradeBySymbol
 import minatorak.capitalcost.properties.BinanceEndpoint
 import minatorak.capitalcost.properties.UserProperties
 import org.springframework.stereotype.Component
@@ -28,7 +28,7 @@ class TradeBinanceProvider(
         return binanceClient.getAllOrderSymbol(uri, userProperties.apiKey)
     }
 
-    suspend fun accountTradeList(symbol: String): List<TradesBySymbol>? {
+    suspend fun accountTradeList(symbol: String): List<TransactionTradeBySymbol>? {
         val timeStamp = System.currentTimeMillis().toString()
         val data = "symbol=$symbol&limit=1000&timestamp=$timeStamp"
         val hmacSHA256 = signatureComponent.hmacWithBouncyCastle(data, userProperties.secretKey)
@@ -38,8 +38,7 @@ class TradeBinanceProvider(
             .queryParam("timestamp", timeStamp)
             .queryParam("signature", hmacSHA256)
         try {
-
-        return binanceClient.accountTradeList(uri, userProperties.apiKey)
+            return binanceClient.accountTradeList(uri, userProperties.apiKey)
         } catch (ex: Exception) {
             return null
         }

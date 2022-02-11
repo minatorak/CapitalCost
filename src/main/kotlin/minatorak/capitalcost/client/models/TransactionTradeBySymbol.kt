@@ -1,6 +1,8 @@
 package minatorak.capitalcost.client.models
 
-data class TradesBySymbol(
+import java.math.BigDecimal
+
+data class TransactionTradeBySymbol(
     val symbol: String,
     val id: Int,
     val orderId: Int,
@@ -14,7 +16,19 @@ data class TradesBySymbol(
     val isBuyer: Boolean,
     val isMaker: Boolean,
     val isBeatMatch: Boolean
-)
+) {
+    fun qty(): BigDecimal {
+        return BigDecimal(qty.toCharArray(), 0 ,7)
+    }
+
+    fun quoteQty(): BigDecimal {
+        return BigDecimal(quoteQty.toCharArray(), 0 ,7)
+    }
+
+    fun price(): BigDecimal {
+        return BigDecimal(price.toCharArray(), 0 ,7)
+    }
+}
 
 
 //[

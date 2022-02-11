@@ -34,7 +34,7 @@ class CoinHandler(
 
     suspend fun average(request: ServerRequest): ServerResponse {
         val coin = request.queryParam("coin").get()
-        coinInformationService.getAveragePrice(coin)
-        return ServerResponse.ok().bodyValueAndAwait("Hello")
+        val response = coinInformationService.getAveragePrice(coin)
+        return ServerResponse.ok().bodyValueAndAwait(response)
     }
 }
