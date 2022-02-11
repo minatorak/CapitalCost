@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 
 @Configuration
-class WebClientConfiguration() {
+class WebClientConfiguration {
     companion object {
         private const val ONE_SECOND = 1000
         private const val size = 16 * 1024 * 1024

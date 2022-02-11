@@ -15,7 +15,7 @@ class SignatureComponent {
     fun hmacWithBouncyCastle(data: String, secretKey: String, algorithm: String = "HmacSHA256"): String? {
         val digest = getHashDigest(algorithm)
         val hMac = HMac(digest)
-        hMac.init(KeyParameter(secretKey.toByteArray()));
+        hMac.init(KeyParameter(secretKey.toByteArray()))
         val hmacIn = data.toByteArray()
         hMac.update(hmacIn, 0, hmacIn.size)
         val hmacOut = ByteArray(hMac.macSize)
