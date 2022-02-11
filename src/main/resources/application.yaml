@@ -8,3 +8,11 @@ binance:
   clusters1: https://api1.binance.com
   clusters2: https://api2.binance.com
   clusters3: https://api3.binance.com
+
+markets:
+  - USDT
+  - BTC
+  - BNB
+  - ETH
+  - BUSD
+  - USDC

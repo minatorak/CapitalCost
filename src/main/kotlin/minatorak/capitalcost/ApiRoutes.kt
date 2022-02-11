@@ -10,6 +10,9 @@ class ApiRoutes {
 
     @Bean
     fun apiRouters(coinHandler : CoinHandler) = coRouter {
-        GET("coin/list", coinHandler::list)
+        "coin/list".nest {
+            GET("/spot", coinHandler::list)
+            GET("/average", coinHandler::average)
+        }
     }
 }
