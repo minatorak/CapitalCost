@@ -6,6 +6,7 @@ import minatorak.capitalcost.client.models.OpenOrders
 import minatorak.capitalcost.client.models.TransactionTradeBySymbol
 import minatorak.capitalcost.properties.BinanceEndpoint
 import minatorak.capitalcost.properties.UserProperties
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
 
@@ -16,6 +17,7 @@ class TradeBinanceProvider(
     private val userProperties: UserProperties,
     private val binanceEndpoint: BinanceEndpoint
 ) {
+    private val log = LoggerFactory.getLogger(TradeBinanceProvider::class.java)
 
     suspend fun getAllOrders(): List<OpenOrders>? {
         val timeStamp = System.currentTimeMillis().toString()
@@ -40,6 +42,7 @@ class TradeBinanceProvider(
         try {
             return binanceClient.accountTradeList(uri, userProperties.apiKey)
         } catch (ex: Exception) {
+            log.info("exception get accountTradeList from symbol: $symbol cause: ${ex.message}")
             return null
         }
     }

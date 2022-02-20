@@ -1,5 +1,8 @@
 package minatorak.capitalcost.api.coin
 
+import com.fasterxml.jackson.module.kotlin.convertValue
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import kotlinx.coroutines.*
 import minatorak.capitalcost.client.coin.CoinBinanceProvider
 import minatorak.capitalcost.client.models.CoinInformation
 import minatorak.capitalcost.client.models.OpenOrders
@@ -17,6 +20,7 @@ class CoinInformationService(
     private val nameMarkets: NameMarkets
 ) {
     private val log = LoggerFactory.getLogger(CoinInformationService::class.java)
+    private val objectMapper = jacksonObjectMapper()
 
     suspend fun getAllCoinList(): List<CoinInformation>? {
         val timestamp = System.currentTimeMillis()
@@ -28,15 +32,20 @@ class CoinInformationService(
         for (market in nameMarkets.markets) {
             val symbol = coin.uppercase() + market
             tradeBinanceProvider.accountTradeList(symbol)?.let { tradeList ->
-                val coin =  AveragePriceOfCoin()
-                tradeList.forEachIndexed { index, trx ->
-                    when {
-                        index == 0 && trx.isBuyer -> addFirstTrx(coin, trx)
-                        index != 0 && trx.isBuyer -> calculatorBuyer(coin, trx)
-                        !trx.isBuyer -> calculatorSeller(coin, trx)
+                CoroutineScope(Dispatchers.Unconfined).launch {
+                    runCatching {
+                        log.debug(objectMapper.writeValueAsString(tradeList))
                     }
                 }
-                priceMap[symbol] = coin
+                val coinPrice = AveragePriceOfCoin()
+                tradeList.forEachIndexed { index, trx ->
+                    when {
+                        index == 0 && trx.isBuyer -> addFirstTrx(coinPrice, trx)
+                        index != 0 && trx.isBuyer -> calculatorBuyer(coinPrice, trx)
+                        !trx.isBuyer -> calculatorSeller(coinPrice, trx)
+                    }
+                }
+                priceMap[symbol] = coinPrice
             }
         }
         return priceMap
