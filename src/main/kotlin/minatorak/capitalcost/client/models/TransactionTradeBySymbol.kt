@@ -4,9 +4,9 @@ import java.math.BigDecimal
 
 data class TransactionTradeBySymbol(
     val symbol: String,
-    val id: Int,
-    val orderId: Int,
-    val orderListId: Int,
+    val id: Long,
+    val orderId: Long,
+    val orderListId: Long,
     val price: String, // ราคา
     val qty: String, // จำนวณเหรียญที่แลกเปลี่ยน
     val quoteQty: String, // ราคาตลาด
@@ -18,15 +18,16 @@ data class TransactionTradeBySymbol(
     val isBeatMatch: Boolean
 ) {
     fun qty(): BigDecimal {
-        return BigDecimal(qty.toCharArray(), 0 ,7)
+        return BigDecimal.valueOf(qty.toDouble())
+
     }
 
     fun quoteQty(): BigDecimal {
-        return BigDecimal(quoteQty.toCharArray(), 0 ,7)
+        return BigDecimal.valueOf(quoteQty.toDouble())
     }
 
     fun price(): BigDecimal {
-        return BigDecimal(price.toCharArray(), 0 ,7)
+        return BigDecimal.valueOf(price.toDouble())
     }
 }
 
