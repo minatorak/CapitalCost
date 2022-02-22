@@ -29,6 +29,10 @@ data class TransactionTradeBySymbol(
     fun price(): BigDecimal {
         return BigDecimal.valueOf(price.toDouble())
     }
+
+    fun commission(): BigDecimal {
+        return BigDecimal.valueOf(commission.toDouble())
+    }
 }
 
 
