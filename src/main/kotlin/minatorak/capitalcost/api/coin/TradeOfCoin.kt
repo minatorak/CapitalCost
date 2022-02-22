@@ -6,6 +6,7 @@ data class TradeOfCoin(
     var totalCoin: BigDecimal = BigDecimal.ZERO,
     var price: BigDecimal = BigDecimal.ZERO,
     var quoteQty: BigDecimal = BigDecimal.ZERO,
+    var totalTakeProfit: BigDecimal = BigDecimal.ZERO
 ) {
     fun setValueAfterSellAll() {
         price = BigDecimal.ZERO

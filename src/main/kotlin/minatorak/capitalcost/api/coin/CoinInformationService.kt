@@ -60,6 +60,7 @@ class CoinInformationService(
         coin.totalCoin = coin.totalCoin - trx.qty()
         val diffQuoteQty = coin.price * trx.qty()
         coin.quoteQty = coin.quoteQty - diffQuoteQty
+        coin.totalTakeProfit = coin.totalTakeProfit + (trx.qty() * (trx.price() - coin.price)) - trx.commission()
         if (coin.totalCoin.compareTo(BigDecimal.ZERO) == 0)
             coin.setValueAfterSellAll()
         else
