@@ -2,7 +2,8 @@ spring:
   profiles:
     include:
       - user
-
+log:
+  level: INFO
 binance:
   base-endpoint: https://api.binance.com
   clusters1: https://api1.binance.com

@@ -11,7 +11,7 @@ data class TransactionTradeBySymbol(
     val qty: String, // จำนวณเหรียญที่แลกเปลี่ยน
     val quoteQty: String, // ราคาตลาด
     val commission: String, //
-    val commissionAsser: String?,
+    val commissionAsset: String,
     val time: Long,
     val isBuyer: Boolean,
     val isMaker: Boolean,
@@ -19,7 +19,6 @@ data class TransactionTradeBySymbol(
 ) {
     fun qty(): BigDecimal {
         return BigDecimal.valueOf(qty.toDouble())
-
     }
 
     fun quoteQty(): BigDecimal {
