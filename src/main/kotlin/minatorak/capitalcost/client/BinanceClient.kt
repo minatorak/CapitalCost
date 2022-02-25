@@ -1,5 +1,6 @@
 package minatorak.capitalcost.client
 
+import BinanceExchangeInfoStatus
 import minatorak.capitalcost.client.models.CoinInformation
 import minatorak.capitalcost.client.models.OpenOrders
 import minatorak.capitalcost.client.models.TransactionTradeBySymbol
@@ -44,6 +45,16 @@ class BinanceClient(private val webClient: WebClient) {
                     .toUriString()
             )
             .header(API_KEY, apiKey)
+            .retrieve()
+            .awaitBodyOrNull()
+    }
+
+    suspend fun exchangeInfoList(uri : UriComponentsBuilder): BinanceExchangeInfoStatus? {
+        return webClient.get()
+            .uri(
+                uri.path(BinancePath.exchangeInfo)
+                    .toUriString()
+            )
             .retrieve()
             .awaitBodyOrNull()
     }
