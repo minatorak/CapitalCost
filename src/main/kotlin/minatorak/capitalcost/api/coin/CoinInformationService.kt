@@ -30,9 +30,9 @@ class CoinInformationService(
         return coinBinanceProvider.getCoinInformation(timestamp)
     }
 
-    suspend fun getAveragePrice(coin: String): MutableMap<String, TradeOfCoin> {
+    suspend fun getAveragePrice(coin: String): MutableMap<String, TradeSummaryOfCoin> {
         coinName = coin.uppercase()
-        val priceMap = mutableMapOf<String, TradeOfCoin>()
+        val priceMap = mutableMapOf<String, TradeSummaryOfCoin>()
         for (market in nameMarkets.markets) {
             val symbol = coinName + market
             val commission = mutableMapOf<String, BigDecimal>()
@@ -42,7 +42,7 @@ class CoinInformationService(
                         log.debug(objectMapper.writeValueAsString(tradeList))
                     }
                 }
-                val coinPrice = TradeOfCoin()
+                val coinPrice = TradeSummaryOfCoin(coinName)
                 tradeList.forEachIndexed { index, trx ->
                     try {
                         when {
@@ -66,7 +66,7 @@ class CoinInformationService(
         return priceMap
     }
 
-    private fun calculatorSeller(coin: TradeOfCoin, trx: TransactionTradeBySymbol) {
+    private fun calculatorSeller(coin: TradeSummaryOfCoin, trx: TransactionTradeBySymbol) {
         coin.totalCoin = coin.totalCoin - trx.qty()
         val diffQuoteQty = coin.price * trx.qty()
         coin.quoteQty = coin.quoteQty - diffQuoteQty
@@ -79,18 +79,18 @@ class CoinInformationService(
             coin.setValueAfterSellAll()
         else
             coin.price = (coin.quoteQty / coin.totalCoin).setScale(4, RoundingMode.HALF_UP)
-        if (coin.price.signum() < 0)
+        if (coin.price.compareTo(BigDecimal.ZERO) < 0)
             log.info("trx: $trx")
     }
 
-    private fun calculatorBuyer(coin: TradeOfCoin, trx: TransactionTradeBySymbol) {
+    private fun calculatorBuyer(coin: TradeSummaryOfCoin, trx: TransactionTradeBySymbol) {
         coin.totalCoin = coin.totalCoin + trx.qty()
         if (trx.commissionAsset == coinName) coin.totalCoin - trx.commission()
         coin.quoteQty = coin.quoteQty + trx.quoteQty()
         coin.price = (coin.quoteQty / coin.totalCoin).setScale(4, RoundingMode.HALF_UP)
     }
 
-    private fun addFirstTrx(coin: TradeOfCoin, trx: TransactionTradeBySymbol) {
+    private fun addFirstTrx(coin: TradeSummaryOfCoin, trx: TransactionTradeBySymbol) {
         if (trx.commissionAsset == coinName)
             coin.totalCoin = trx.qty() - trx.commission()
         else
