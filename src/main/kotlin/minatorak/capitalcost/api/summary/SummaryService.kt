@@ -1,5 +1,6 @@
 package minatorak.capitalcost.api.summary
 
+import kotlinx.coroutines.delay
 import minatorak.capitalcost.api.coin.TradeSummaryOfCoin
 import minatorak.capitalcost.client.coin.CoinBinanceProvider
 import minatorak.capitalcost.client.trade.TradeBinanceProvider
@@ -31,6 +32,7 @@ class SummaryService(
                 nameMarkets.markets.forEach { nameOfMarket ->
                     val symbol = coinInfo.coin + nameOfMarket
                     if (nameMarkets.mapMarketPair.contains(symbol)) {
+                        delay(500) // because binance error too many request
                         tradeBinanceProvider.accountTradeList(symbol)?.let { tradList ->
                             if (tradList.isNotEmpty()) {
                                 listSummary.add(summaryPriceComponent.calculatorTrade(coinInfo.coin, tradList))
