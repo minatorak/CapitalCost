@@ -2,11 +2,12 @@ package minatorak.capitalcost.client
 
 import BinanceExchangeInfoStatus
 import minatorak.capitalcost.client.models.CoinInformation
+import minatorak.capitalcost.client.models.MiningAccountEarningResponse
 import minatorak.capitalcost.client.models.OpenOrders
 import minatorak.capitalcost.client.models.TransactionTradeBySymbol
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.awaitBodyOrNull
+import org.springframework.web.reactive.function.client.*
 import org.springframework.web.util.UriComponentsBuilder
 
 @Component
@@ -14,6 +15,7 @@ class BinanceClient(private val webClient: WebClient) {
 
     companion object {
         private const val API_KEY = "X-MBX-APIKEY"
+        val log = LoggerFactory.getLogger(BinanceClient::class.java)
     }
 
     suspend fun callAllCoinInformationUser(uri : UriComponentsBuilder, apiKey: String): List<CoinInformation>? {
@@ -25,6 +27,25 @@ class BinanceClient(private val webClient: WebClient) {
             .header(API_KEY, apiKey)
             .retrieve()
             .awaitBodyOrNull()
+    }
+
+    suspend fun callGetAccountEarning(uri: UriComponentsBuilder, apiKey: String): MiningAccountEarningResponse? {
+        return webClient.get()
+            .uri(
+                uri.path(BinancePath.miningAccountEarning)
+                    .toUriString()
+            )
+            .header(API_KEY, apiKey)
+            .httpRequest {
+
+            }
+            .awaitExchange {
+                log.info("response ${it.awaitBodyOrNull(String::class)}")
+                return@awaitExchange it.awaitBody()
+//                return@awaitExchange it.awaitBody(MiningAccountEarningResponse::class.java)
+            }
+
+//            .awaitBodyOrNull()
     }
 
     suspend fun getAllOrderSymbol(uri : UriComponentsBuilder, apiKey: String): List<OpenOrders>? {
