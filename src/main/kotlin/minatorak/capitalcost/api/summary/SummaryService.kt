@@ -1,5 +1,6 @@
 package minatorak.capitalcost.api.summary
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import kotlinx.coroutines.delay
 import minatorak.capitalcost.api.coin.TradeSummaryOfCoin
 import minatorak.capitalcost.client.coin.CoinBinanceProvider
@@ -19,8 +20,17 @@ class SummaryService(
     private val log = LoggerFactory.getLogger(SummaryService::class.java)
     private val listSummary by lazy { mutableListOf<TradeSummaryOfCoin>() }
 
-    suspend fun getSummary(): MutableList<TradeSummaryOfCoin> {
-        return listSummary
+    suspend fun getSummary(): String {
+        return listSummary.let { it ->
+            it.sortByDescending { it.quoteQty }
+            runCatching {
+                jacksonObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(it)
+            }.getOrElse {
+                ""
+            }
+        }
     }
 
     suspend fun sum() {
