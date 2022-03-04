@@ -20,16 +20,9 @@ class SummaryService(
     private val log = LoggerFactory.getLogger(SummaryService::class.java)
     private val listSummary by lazy { mutableListOf<TradeSummaryOfCoin>() }
 
-    suspend fun getSummary(): String {
-        return listSummary.let { it ->
-            it.sortByDescending { it.quoteQty }
-            runCatching {
-                jacksonObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(it)
-            }.getOrElse {
-                ""
-            }
+    suspend fun getSummary(): MutableList<TradeSummaryOfCoin> {
+        return listSummary.apply {
+            this.sortByDescending { it.quoteQty }
         }
     }
 
