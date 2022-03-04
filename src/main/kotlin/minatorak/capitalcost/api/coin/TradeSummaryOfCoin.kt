@@ -13,5 +13,6 @@ data class TradeSummaryOfCoin(
     fun setValueAfterSellAll() {
         price = BigDecimal.ZERO
         quoteQty = BigDecimal.ZERO
+        totalCoin = BigDecimal.ZERO
     }
 }

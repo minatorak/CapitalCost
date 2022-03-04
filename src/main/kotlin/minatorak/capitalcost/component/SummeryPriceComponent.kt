@@ -59,7 +59,7 @@ class SummeryPriceComponent {
         sum.totalTakeProfit =
             sum.totalTakeProfit + (trx.qty() * (trx.price() - sum.price)) - (commission * trx.price())
 
-        if (sum.totalCoin.compareTo(BigDecimal.ZERO) == 0)
+        if (sum.totalCoin.compareTo(BigDecimal.ZERO) <= 0)
             sum.setValueAfterSellAll()
         else
             sum.price = (sum.quoteQty / sum.totalCoin).setScale(4, RoundingMode.HALF_UP)
