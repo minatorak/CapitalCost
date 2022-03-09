@@ -6,4 +6,5 @@ object  BinancePath {
     const val currentOpenOrders = "/api/v3/openOrders"
     const val accountTradeList = "/api/v3/myTrades"
     const val exchangeInfo = "/api/v3/exchangeInfo"
+    const val symbolPriceTicker = "/api/v3/ticker/price"
 }
