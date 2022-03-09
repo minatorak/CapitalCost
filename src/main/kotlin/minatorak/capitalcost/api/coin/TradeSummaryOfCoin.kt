@@ -15,4 +15,9 @@ data class TradeSummaryOfCoin(
         quoteQty = BigDecimal.ZERO
         totalCoin = BigDecimal.ZERO
     }
+
+    fun setValueEarningCoin() {
+        price = BigDecimal.ZERO
+        quoteQty = BigDecimal.ZERO
+    }
 }
