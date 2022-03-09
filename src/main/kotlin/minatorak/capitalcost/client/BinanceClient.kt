@@ -1,10 +1,7 @@
 package minatorak.capitalcost.client
 
 import BinanceExchangeInfoStatus
-import minatorak.capitalcost.client.models.CoinInformation
-import minatorak.capitalcost.client.models.MiningAccountEarningResponse
-import minatorak.capitalcost.client.models.OpenOrders
-import minatorak.capitalcost.client.models.TransactionTradeBySymbol
+import minatorak.capitalcost.client.models.*
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.*
@@ -40,12 +37,8 @@ class BinanceClient(private val webClient: WebClient) {
 
             }
             .awaitExchange {
-                log.info("response ${it.awaitBodyOrNull(String::class)}")
                 return@awaitExchange it.awaitBody()
-//                return@awaitExchange it.awaitBody(MiningAccountEarningResponse::class.java)
             }
-
-//            .awaitBodyOrNull()
     }
 
     suspend fun getAllOrderSymbol(uri : UriComponentsBuilder, apiKey: String): List<OpenOrders>? {
