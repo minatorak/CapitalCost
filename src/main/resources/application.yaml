@@ -11,6 +11,5 @@ binance:
   clusters3: https://api3.binance.com
 
 markets:
-  - USDT
 
 map-market-pair:
