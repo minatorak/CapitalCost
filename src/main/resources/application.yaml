@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    include:
+      - user
+log:
+  level: INFO
+binance:
+  base-endpoint: https://api.binance.com
+  clusters1: https://api1.binance.com
+  clusters2: https://api2.binance.com
+  clusters3: https://api3.binance.com
+
+markets:
+
+map-market-pair:
